@@ -1,6 +1,6 @@
 const nodemailer = require('nodemailer')
 
-const sendEmail = async (url, email) => {
+const sendEmail = async (url, email, subject, message) => {
     try {
         const transporter = nodemailer.createTransport({
             host: 'smtp.hostinger.in', // enter your host name
