@@ -1,9 +1,8 @@
 const nodemailer = require('nodemailer')
 
-const sendEmail = async (url, email, subject, message) => {
-    try {
+const sendEmail = async ( emailData, email, subject, message) => {
         const transporter = nodemailer.createTransport({
-            host: 'smtp.hostinger.in', // enter your host name
+            host: 'smtp.hostinger.com', // enter your host name
             port: 465,
             secure: true,
             auth: {
@@ -14,13 +13,9 @@ const sendEmail = async (url, email, subject, message) => {
         await transporter.sendMail({
             from: 'admin@prashil.semantica.co.in',
             to: email,
-            subject: 'Confirm your email',
-            html: `<h1>Hello world</h1>`,
+            subject: 'New Lead',
+            html: `<div><h1>${emailData.message}<h1><br/>${emailData.name}<br/>${emailData.email}<br/>${emailData.subject}</div>` ,
         });
-    }
-    catch(e){
-        console.log(e);
-    }
 }
 
 module.exports = sendEmail;

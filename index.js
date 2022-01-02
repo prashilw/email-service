@@ -56,7 +56,7 @@ app.post("/api/login", validateAuth, (req, res) =>{
     if(user){
         // res.json(user)
         //Generate access token
-        const accessToken = jwt.sign({id: user.id, isAdmin: user.isAdmin}, secretKey, {expiresIn: "20s"});
+        const accessToken = jwt.sign({id: user.id, isAdmin: user.isAdmin}, secretKey, {expiresIn: "30s"});
         res.json({
             username: user.user,
             isAdmin: user.isAdmin,
@@ -71,13 +71,18 @@ app.get('/', (req, res) => {
   res.send('Semantica Email Service!')
 })
 
-app.post("/", verify, (req, res) => {
+app.post("/sendEmail", verify, (req, res) => {
     console.log(req.body);
-    res.status(200).json("Email sent");
-    // const emailRet = sendEmail('localhost:8000','admin@semantica.co.in');
-    // emailRet.then(function(){
-    //     res.send("Email sent");
-    // }.bind(this))
+    // res.status(200).send("Email sent");
+    const emailRet = sendEmail(req.body,'admin@semantica.co.in');
+    emailRet.then(() => {
+        res.status(200).send("Email sent");
+    }).catch((err) => {
+        res.status(500).json("Internal Error")
+    })
+
+    // res.status(200).send("Email sent");
+    
 })
 
 app.listen(port, () => {
