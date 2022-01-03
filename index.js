@@ -1,11 +1,16 @@
 const express = require('express');
 const app = express();
+const cors = require('cors');
 const basicAuth = require('basic-auth');
 const jwt = require('jsonwebtoken');
 const port = process.env.PORT || "8000";
 const sendEmail = require('./email');
 
 app.use(express.json());
+
+app.use(cors({
+    origin: '*'
+}));
 
 const secretKey = 'Dd4IbLO1yqAUdnxpaZLNQj6Vsnwp2hD97jlKrzgt-xg';
 
@@ -24,6 +29,12 @@ const users = [
     }
 ];
 
+app.options("*", (req, res) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Content-Type', 'application/json;charset=UTF-8');
+    res.header('Access-Control-Allow-Credentials', true);
+    res.sendStatus(204);
+})
 const verify = (req, res, next) => {
     const authHeader = req.headers.authorization;
     if(authHeader){
